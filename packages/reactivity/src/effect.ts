@@ -5,7 +5,6 @@ export const effect = (fn, options: any = {}) => {
     if (!options.lazy) {
         effect()
     }
-
     return effect;
 }
 
@@ -51,11 +50,10 @@ export const Track = (target, type, key) => { //可以拿到当前的effect
     }
     let dep = depsMap.get(key)
      if(!dep ){ //没有key
-         depsMap.set(key,(dep = new Set))
+        depsMap.set(key,(dep = new Set))
      }
      //设置  set
      if(!dep.has(activeEffect)){
-           dep.add(activeEffect)
+        dep.add(activeEffect)
      }
-
 }
