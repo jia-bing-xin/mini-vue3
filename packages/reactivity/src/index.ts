@@ -1,4 +1,8 @@
-let a = 2
 export {
-    a
-}
+    reative,
+    shallowReative,
+    shallowReadonly,
+    readonly
+}  from './reativeApi'
+ 
+export {effect} from './effect'
