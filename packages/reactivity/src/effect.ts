@@ -1,3 +1,6 @@
+import { isArray,isIntegerKey } from "@vue/shared"
+import { TriggerOpTypes } from './optionations'
+
 export const effect = (fn, options: any = {}) => {
     //创建响应式effect，数据变化时重新执行
     const effect = createReactiveEffect(fn, options)
@@ -44,7 +47,7 @@ export const Track = (target, type, key) => { //可以拿到当前的effect
         return;
     }
     // (1)获取 effect
-    let depsMap = targetMap.get(target); //没有  
+    let depsMap = targetMap.get(target);
     if (!depsMap) {
         targetMap.set(target, (depsMap = new Map)) //第二个参数是不是他的只  map
     }
@@ -56,4 +59,50 @@ export const Track = (target, type, key) => { //可以拿到当前的effect
      if(!dep.has(activeEffect)){
         dep.add(activeEffect)
      }
+}
+
+//触发更新
+// 1 处理对象
+export function trigger(target, type, key?, newValue?, oldValue?) {
+    // 触发依赖  问题
+    console.log(targetMap) //收集依赖  map  =>{target:map{key=>set}}
+    const depsMap = targetMap.get(target) // map
+    if (!depsMap) {
+        return
+    }
+    //有
+    // let effects = depsMap.get(key) // set []
+    let effectSet = new Set() //如果有多个同时修改一个值，并且相同 ，set 过滤一下
+    const add = (effectAdd) => {
+        if (effectAdd) {
+            effectAdd.forEach(effect => effectSet.add(effect))
+        }
+    }
+    //处理数组 就是 key === length   修改 数组的 length
+    if (key === 'length' && isArray(target)) {
+        depsMap.forEach((dep, key) => {
+            //  console.log(depsMap,555)
+             console.log(key, newValue)
+             console.log(dep) // [1,2,3]   length =1
+             // 如果更改 的长度 小于 收集的索引 ，那么这个索引需要重新执行 effect
+            if (key === 'length' || key > newValue) {
+                add(dep)
+            }
+        })
+    } else {
+        //可能是对象
+        if (key != undefined) {
+            add(depsMap.get(key)) //获取当前属性的effect
+        }
+        //数组  修改  索引
+        switch (type) {
+            case TriggerOpTypes.ADD:
+                if (isArray(target) && isIntegerKey(key)) {
+                    add(depsMap.get('length')) 
+                }
+        }
+    }
+    //执行
+    effectSet.forEach((effect: any) => effect())
+
 }

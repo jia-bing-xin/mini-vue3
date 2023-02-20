@@ -1,7 +1,7 @@
-import { isObject } from '@vue/shared';
+import { extend, isArray, isIntegerKey, hasOwn, isObject, } from '@vue/shared'
 import {readonly,reative} from './reativeApi'
-import {TrackOptypes} from './optionations'
-import { Track} from './effect'
+import { TrackOptypes, TriggerOpTypes, haseChange } from './optionations'
+import { Track, trigger } from './effect'
 function createGetter(isReadonly = false, shallow = false) { //拦截获取的功能
     return function get(target, key, receiver) {
         const res = Reflect.get(target, key, receiver) // 函数形式：相当于target[key] = value
@@ -25,11 +25,17 @@ function createGetter(isReadonly = false, shallow = false) { //拦截获取的�
 function createSetter(shallow = false) { //拦截设置的功能
     return function set(target, key, value, receiver) {
         const result = Reflect.set(target, key, value, receiver) // 函数形式：相当于target[key] = value
-           //当数据更新时候 通知对应属性的effect重新执行
-           // 我们要区分是新增的 还是 修改的  vue2 里无法监控更改索引，无法监控数组的长度变化
-           // =》 hack的方法  需要特殊处理
-       
-    
+        //(1) 获取老值
+        const oldValue = target[key]
+        //2判断新增：false 还是 修改：true
+        let haskey = isArray(target) && isIntegerKey(key) ? Number(key) < target.length : hasOwn(target, key)
+        if (!haskey) {
+            trigger(target, TriggerOpTypes.ADD, key, value)
+        } else {
+            if (!haseChange(value, oldValue)) {
+                trigger(target, TriggerOpTypes.SET, key, value, oldValue)
+            }
+        }
         return result
     }
 }
@@ -42,8 +48,10 @@ const shallowReadonlyGet = createGetter(true, true)
 const set = createSetter()
 const shallowSet = createSetter(true)
 //只读:用set 时会报错  
-let readonlySet = (target, key) => {
-    console.warn(`set ${target} on key ${key} falied`)
+let readonlySet = {
+    set: (target, key) => {
+        console.warn(`set ${target} on key ${key} falied`)
+    }
 }
 export const reativeHandlers = {
     get,
@@ -54,14 +62,15 @@ export const shallowReativeHandlers = {
     set: shallowSet
 }
 
-export const readonlyHandlers = {
+export const readonlyHandlers = extend({
     get: reandonlyGet,
-    set: readonlySet
-}
-export const shallowReadonlyHandlers = {
+
+}, readonlySet)
+
+export const shallowReadonlyHandlers = extend({
     get: shallowReadonlyGet,
-    set: readonlySet
-}
+
+}, readonlySet)
 
 
 
