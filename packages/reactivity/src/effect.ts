@@ -52,10 +52,9 @@ export const Track = (target, type, key) => { //可以拿到当前的effect
         targetMap.set(target, (depsMap = new Map)) //第二个参数是不是他的只  map
     }
     let dep = depsMap.get(key)
-     if(!dep ){ //没有key
+     if(!dep ){
         depsMap.set(key,(dep = new Set))
      }
-     //设置  set
      if(!dep.has(activeEffect)){
         dep.add(activeEffect)
      }
@@ -103,6 +102,12 @@ export function trigger(target, type, key?, newValue?, oldValue?) {
         }
     }
     //执行
-    effectSet.forEach((effect: any) => effect())
+    effectSet.forEach((effect: any) => {
+        if(effect.options.sch){
+          effect.options.sch(effect)  //_drity = true
+        }else{
+          effect() 
+        }
+      })
 
 }
