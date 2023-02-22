@@ -16,6 +16,7 @@ export const createVnode = (type, props, children = null) => {
       children,
       key: props && props.key,//diff 会用到
       el: null, //和真实的元素和vnode 对应
+      component: {},
       shapeFlag
    }
    //儿子标识 h('div',{style；{color:red}},[])
@@ -34,4 +35,17 @@ function normalizeChildren(vnode, children) {
       type = ShapeFlags.TEXT_CHILDREN
    }
    vnode.shapeFlag = vnode.shapeFlag | type
+}
+
+//判断他是不是一个vnode
+export function isVnode(vnode) {
+   return vnode._v_isVnode
+}
+
+//元素的children  变成 vnode
+export const TEXT = Symbol('text')
+export function CVnode(child) {
+   // [ 'text']  [h()]
+   if (isObject(child)) return child
+   return createVnode(TEXT, null, String(child))
 }
