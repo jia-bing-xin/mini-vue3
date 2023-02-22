@@ -11,7 +11,7 @@ export const nodeOps = {
     insert: (child, parent, ancher = null) => {
         parent.insertBefore(child, ancher)
     },
-    querySlecter: slect => document.querySelector(slect),
+    querySelector: slect => document.querySelector(slect),
     setElementText: (el, text) => el.textConent = text,
     createText: text => document.createTextNode(text),
     setText: (node, text) => node.nodeValue = text
