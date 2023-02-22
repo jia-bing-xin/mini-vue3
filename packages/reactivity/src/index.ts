@@ -3,10 +3,10 @@ export {
     shallowReative,
     shallowReadonly,
     readonly
-}  from './reativeApi'
- 
-export {effect} from './effect'
+} from './reativeApi'
 
-export {ref,toRef,toRefs} from './ref'
+export { effect } from './effect'
 
- export {computed}  from './computed'
+export { ref, toRef, toRefs } from './ref'
+
+export { computed } from './computed'

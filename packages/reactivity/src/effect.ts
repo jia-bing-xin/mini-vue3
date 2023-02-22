@@ -1,4 +1,4 @@
-import { isArray,isIntegerKey } from "@vue/shared"
+import { isArray, isIntegerKey } from "@vue/shared"
 import { TriggerOpTypes } from './optionations'
 
 export const effect = (fn, options: any = {}) => {
@@ -52,12 +52,12 @@ export const Track = (target, type, key) => { //可以拿到当前的effect
         targetMap.set(target, (depsMap = new Map)) //第二个参数是不是他的只  map
     }
     let dep = depsMap.get(key)
-     if(!dep ){
-        depsMap.set(key,(dep = new Set))
-     }
-     if(!dep.has(activeEffect)){
+    if (!dep) {
+        depsMap.set(key, (dep = new Set))
+    }
+    if (!dep.has(activeEffect)) {
         dep.add(activeEffect)
-     }
+    }
 }
 
 //触发更新
@@ -81,9 +81,9 @@ export function trigger(target, type, key?, newValue?, oldValue?) {
     if (key === 'length' && isArray(target)) {
         depsMap.forEach((dep, key) => {
             //  console.log(depsMap,555)
-             console.log(key, newValue)
-             console.log(dep) // [1,2,3]   length =1
-             // 如果更改 的长度 小于 收集的索引 ，那么这个索引需要重新执行 effect
+            console.log(key, newValue)
+            console.log(dep) // [1,2,3]   length =1
+            // 如果更改 的长度 小于 收集的索引 ，那么这个索引需要重新执行 effect
             if (key === 'length' || key > newValue) {
                 add(dep)
             }
@@ -97,17 +97,17 @@ export function trigger(target, type, key?, newValue?, oldValue?) {
         switch (type) {
             case TriggerOpTypes.ADD:
                 if (isArray(target) && isIntegerKey(key)) {
-                    add(depsMap.get('length')) 
+                    add(depsMap.get('length'))
                 }
         }
     }
     //执行
     effectSet.forEach((effect: any) => {
-        if(effect.options.sch){
-          effect.options.sch(effect)  //_drity = true
-        }else{
-          effect() 
+        if (effect.options.sch) {
+            effect.options.sch(effect)  //_drity = true
+        } else {
+            effect()
         }
-      })
+    })
 
 }

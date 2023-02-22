@@ -24,12 +24,12 @@ class ComputedRefImpl {
     public _dirty = true; //默认获取执行
     public _value;
     public effect
-    constructor(getter,public setter) {
+    constructor(getter, public setter) {
         //这个effect   默认不执行    age.value  effect 收集
         this.effect = effect(getter, {
             lazy: true,
-            sch:()=>{  //修改数据的时候执行   age.value  = 20  trigger
-                if(!this._dirty){
+            sch: () => {  //修改数据的时候执行   age.value  = 20  trigger
+                if (!this._dirty) {
                     this._dirty = true
                 }
             }
@@ -40,12 +40,12 @@ class ComputedRefImpl {
     get value() {
         //获取执行
         if (this._dirty) {
-            this._value =  this.effect() //获取用户的值
+            this._value = this.effect() //获取用户的值
             this._dirty = false
         }
-      return this._value
+        return this._value
     }
-    set value(newValue){
+    set value(newValue) {
         this.setter(newValue)
     }
 }

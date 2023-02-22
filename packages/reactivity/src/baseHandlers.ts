@@ -1,23 +1,23 @@
 import { extend, isArray, isIntegerKey, hasOwn, isObject, } from '@vue/shared'
-import {readonly,reative} from './reativeApi'
+import { readonly, reative } from './reativeApi'
 import { TrackOptypes, TriggerOpTypes, haseChange } from './optionations'
 import { Track, trigger } from './effect'
 function createGetter(isReadonly = false, shallow = false) { //拦截获取的功能
     return function get(target, key, receiver) {
         const res = Reflect.get(target, key, receiver) // 函数形式：相当于target[key] = value
-         if(!isReadonly){ 
-             //收集依赖，等数据变化后更新视图
-             console.log('执行effect时取值 收集effect') 
-             //收集effect
-             Track(target,TrackOptypes.GET,key)
-            }
-        if(shallow){
-               return res
+        if (!isReadonly) {
+            //收集依赖，等数据变化后更新视图
+            console.log('执行effect时取值 收集effect')
+            //收集effect
+            Track(target, TrackOptypes.GET, key)
+        }
+        if (shallow) {
+            return res
         }
         //懒代理---当取值会进行代理
-         if(isObject(res)){
-            return isReadonly? readonly(res):reative(res)
-         }
+        if (isObject(res)) {
+            return isReadonly ? readonly(res) : reative(res)
+        }
         return res
     }
 }
