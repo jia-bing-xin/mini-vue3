@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../packages/reactivity/dist/reactivity.global.js"></script>
+    <div id="app"></div>
+    <script>
+       
+        const { reative, effect} = VueReactivity
+        let obj = { name: '张三', age: { n: 11 } ,a:55,list:[1,2,3]}
+        const state = reative(obj)
+         effect(()=>{ // effect1
+             //
+          app.innerHTML =   state.name +'====='+ state.list[2] //收集的 effect数组   length to 
+           
+         })
+
+        setTimeout(() => {
+            state.name = '555' //触发set  执行对应的effect    处理  新增  还修改
+            // state.list.length= 1 //[1,2]
+            // state.xx = 666
+            // statee.name = 665
+            // state.list[0] = 55 //新增
+            // state.list[100] = 100
+        }, 2000);
+      
+    </script>
+</body>
+</html>

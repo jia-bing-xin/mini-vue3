@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../packages/reactivity/dist/reactivity.global.js"></script>
+    <div id="app"></div>
+    <script>
+       
+        const { reative, effect,ref,toRef} = VueReactivity
+        // toRef: 将我们的目标 对象中属性的值变成 ref
+        //  let name = ref('张三')
+        let state = reative( {age:10,name:'lis',list:[]})
+        let myAge = toRef(state,'age')  //变成一个实例  他的值添加到 value 
+        // let { age}  = reative( {age:10})
+        console.log(myAge.value) //这个数据是不是响应式
+        effect(()=>{
+            app.innerHTML= myAge.value //收集effect
+        })
+        setTimeout(() => {
+            myAge.value = 50
+            // state.属性
+        }, 1000);
+
+    </script>
+</body>
+</html>

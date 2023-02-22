@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../packages/reactivity/dist/reactivity.global.js"></script>
+    <div id="app"></div>
+    <script>
+       
+        const { reative, effect,ref} = VueReactivity
+         let name = ref('张三')
+         console.log(name)
+
+         effect(()=>{
+            app.innerHTML = name.value 
+         })
+        setTimeout(() => {
+            name.value  = 5555
+        }, 1000);
+
+          //总结  ：1 就是将普通的数据类型  实现原理 Object.defineProperty  
+      //  2 返回值是一个实例对象   有一个属性 value
+      
+
+      //在  reactive  
+      // ref
+    
+
+      //总结一下知识点：
+      //1 触发更新  
+      //（1） 需要修改数据或者新增数据   proxy()
+      //（2）  创建 trigger 触发的方法
+         //（2.1） 先对对象的触发   =》1这个对象  去依赖收集表中 =》有 或这没有    有》找对应的effect(放在数据结构中set) 
+         // (2.2)  数组的特殊处理 （length）  就是  proxy([])  对象   数组索引修改添加值
+
+      //（3） ref  处理普通的数据类型  实现原理 Object.defineProperty 
+        // 返回值是一个实例对象   有一个属性 value
+
+        //toRef  toRefs
+    </script>
+</body>
+</html>

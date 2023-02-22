@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">1000</div>
+  <script src='../packages/runtime-dom/dist/runtime-dom.global.js'></script>
+  <script>
+    let { createApp,h } = VueRuntimeDom
+    //组件
+    let App = {
+       setup(props,context){ // 1 props 组件  context：attrs emit expose
+        //参数
+        //  console.log('setup',props,context)
+         let state = 100
+        //返回值  1 对象   2 函数=》 render 
+          // return ()=>{
+          //   console.log('setup--render')  //代理
+          // }
+       },
+      render(proxy) { //effect  proxy =》各种属性  =>vnode
+        //获取
+        //两个参数
+        //h("div",'hello')
+         //h("div",{})  特殊处理
+         //children
+         //h("div",{},'hello')
+           //h("div",{},['lis'])
+             //h("div",{},[h('span')])
+        
+
+         return h('div',{style:{color:"red"}},['张三'])  //h()  =》vnode => 
+      
+      }
+    }
+    createApp(App, { name: '张三', age: 10 }).mount("#app")
+
+
+
+//总结: 渲染初始化 1：runtime-dom     2runtime-core 渲染
+
+// 1：创建 createApp 方法  =》 runtime-dom 但是 渲染组件 （不同的平台）
+
+
+//3：
+  </script>
+
+</body>
+
+</html>

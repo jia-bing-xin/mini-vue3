@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../packages/reactivity/dist/reactivity.global.js"></script>
+    <div id="app"></div>
+    <script>
+        //toRefs
+        let { ref,computed} =  VueReactivity
+          let age = ref(10)
+
+         let myAge =  computed(()=>{  // 1 computed 定义了，没有使用 不会触发里面的方法
+            console.log('缓存机制')  // _drity
+               return age.value + 20   //effect
+         })
+        //  console.log(myAge.value) // 2具有缓存机制 计算的数据没有改变，不管你用多少出次 执行依次
+         console.log(myAge.value)
+         console.log(myAge.value)
+        // //  effect(()=>{
+
+        // //  })
+        //  //
+         setTimeout(() => {
+            age.value = 20 // 如果没有使用不会执行 trigger
+            console.log(myAge.value)
+         }, 1000);
+        //  console.log(myAge)
+    </script>
+</body>
+</html>
