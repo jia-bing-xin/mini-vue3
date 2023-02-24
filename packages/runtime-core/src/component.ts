@@ -90,8 +90,3 @@ function crateConentext(instance) {
         expose: () => { }
     }
 }
-export const setupRenderEffect = () => {
-
-}
-
-//源码 =》 高阶函数  =》  element ui 

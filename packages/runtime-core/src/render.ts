@@ -348,9 +348,7 @@ export function createRender(renderOptionDom) { //实现渲染  vue3 => vnode =>
                         p[i] = result[start - 1];// 要将他替换的前一个兄弟记住
                     }
                     result[start] = i
-
                 }
-
             }
         }
         //循环获取数据
@@ -365,7 +363,6 @@ export function createRender(renderOptionDom) { //实现渲染  vue3 => vnode =>
     }
     function processElement(n1, n2, container, ancher) {
         if (n1 == null) {
-
             mountElement(n2, container, ancher)
         } else {//更新
             //同一个元素
